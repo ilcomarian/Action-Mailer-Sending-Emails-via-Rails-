@@ -1,24 +1,28 @@
 # README
+ Now we will build a rails application which will send an email to the user when a new user is created. Let’s create a new rails application.
+ 
+$ rails new new_app_name
+$ rails g scaffold user name:string email:string
+$ rake db:create
+$ rake db:migrate
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+We now have a basic application, let’s make use of ActionMailer. The mailer generator is similar to any other generator in rails.
 
-Things you may want to cover:
+$ rails g mailer example_mailer
+ in app/mailers/example_mailer.rb
 
-* Ruby version
+class ExampleMailer < ActionMailer::Base
+  default from: "from@example.com"
+end
 
-* System dependencies
+Now let’s write methods and customized email. First you should change the default email address from from@example.com to the email address you want use as the sender’s address.
 
-* Configuration
 
-* Database creation
+class ExampleMailer < ActionMailer::Base
+  default from: "from@example.com"
 
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+  def sample_email(user)
+    @user = user
+    mail(to: @user.email, subject: 'Sample Email')
+  end
+end
